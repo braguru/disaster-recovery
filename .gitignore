@@ -1,0 +1,3 @@
+echo ".terraform/" > .gitignore
+echo ".DS_Store" >> .gitignore
+echo "*.log" >> .gitignore
