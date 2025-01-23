@@ -7,7 +7,7 @@ variable "tags" {
   description = "value"
   type        = map(string)
   default = {
-    Environment = "dev"
+    Environment = "Development"
     Terraform   = "true"
   }
 }

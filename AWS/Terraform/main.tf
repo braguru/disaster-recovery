@@ -13,7 +13,7 @@ module "icon" {
   ebs_root_volume = var.ebs_root_volume
   user_data       = filebase64("${path.module}/install.sh")
   tags = {
-    Environment = "dev"
+    Environment = "Development"
     Terraform   = "true"
     Name        = "icon"
   }
@@ -23,7 +23,7 @@ module "icon_bucket" {
   source      = "./modules/infra/s3"
   bucket_name = var.bucket_name
   tags = {
-    Environment = "dev"
+    Environment = "Development"
     Terraform   = "true"
     Name        = var.bucket_name
   }

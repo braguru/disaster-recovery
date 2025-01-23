@@ -52,6 +52,17 @@ variable "vpc_sg_ingress" {
   description = "value"
 }
 
+variable "vpc_sg_egress" {
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  description = "value"
+}
+
 variable "ebs_root_volume" {
   type = object({
     volume_size = number

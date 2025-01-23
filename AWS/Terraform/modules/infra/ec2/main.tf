@@ -13,7 +13,6 @@ data "aws_iam_role" "this" {
 }
 
 resource "aws_iam_instance_profile" "this" {
-  name = "EC2RoleForCodeDeploy-InstanceProfile"
   role = data.aws_iam_role.this.name
 }
 
