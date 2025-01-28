@@ -1,0 +1,12 @@
+terraform {
+ backend "s3" {
+  # Replace this with your project's state bucket name!
+  bucket = "project-dev-tf-state"
+  key = "project/terraform.tfstate"
+  region = "eu-west-1"
+
+  # Replace this with your project's DynamoDB table name!
+  dynamodb_table = "project-dev-lock"
+  encrypt = true
+ }
+}

@@ -19,6 +19,18 @@ variable "tags" {
   description = "Tags for the EC2 instance"
 }
 
+variable "ami_owners" {
+  type        = list(string)
+  description = "List of AMI owners to search for the AMI"
+  
+}
+
+variable "ami_name_filter" {
+  type        = list(string)
+  description = "AMI name filter"
+  
+}
+
 variable "user_data" {
 
 }

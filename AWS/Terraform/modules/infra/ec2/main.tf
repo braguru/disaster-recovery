@@ -1,19 +1,43 @@
 data "aws_ami" "ubuntu_ami" {
   most_recent = true
-  owners      = ["099720109477"]
+  owners      = var.ami_owners
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*-amd64-server-*"]
+    values = var.ami_name_filter
   }
 }
 
-data "aws_iam_role" "this" {
-  name = "EC2RoleForCodeDeploy"
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
 }
 
+# data "aws_iam_role" "existing_role" {
+#   name = "EC2RoleForCodeDeploy"
+#   count = try(length(data.aws_iam_role.existing_role.name), 0) > 0 ? 1 : 0
+# }
+
+# data "aws_iam_role" "this" {
+#   # count              = length(data.aws_iam_role.existing_role[count.index].arn) == 0 ? 1 : 0
+#   name               = "EC2RoleForCodeDeploy"
+# }
+
+resource "aws_iam_role" "this" {
+  name               = "EC2RoleForCodeDeploy"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
 resource "aws_iam_instance_profile" "this" {
-  role = data.aws_iam_role.this.name
+  # role = data.aws_iam_role.this.name
+  role = aws_iam_role.this.name
 }
 
 resource "aws_instance" "this" {

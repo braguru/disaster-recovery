@@ -1,15 +1,32 @@
-variable "region" {
-  type        = string
-  description = "AWS region"
-  default     = "eu-west-1"
-}
-
+# General configurations
 variable "profile" {
   type        = string
   description = "AWS profile"
-  default     = "default"
 }
 
+# EC2 instance configurations
+variable "instance_type" {
+  type        = string
+  description = "Project-specific instance type"
+  default     = "t3.medium"
+}
+
+variable "instance_name" {
+  type        = string
+  description = "Project-specific instance name"
+  
+}
+
+variable "ebs_root_volume" {
+  type = object({
+    volume_size = number
+    volume_type = string
+  })
+  description = "Project-specific EBS root volume configurations"
+}
+
+
+# Networking configurations
 variable "sg_name" {
   type        = string
   description = "Projects security group name"
@@ -19,13 +36,6 @@ variable "vpc_id" {
   type        = string
   description = "value"
 }
-
-variable "instance_type" {
-  type        = string
-  description = "Project-specific instance type"
-  default     = "t3.medium"
-}
-
 variable "subnet" {
   type        = string
   description = "Project-specific subnet ID"
@@ -35,12 +45,13 @@ variable "tags" {
   description = "Project-specific tags"
   type        = map(string)
   default = {
-    Environment = "dev"
+    Environment = "Development"
     Terraform   = "true"
-    Name        = "icon"
+    Project     = ""
+  
   }
 }
-
+   
 variable "vpc_sg_ingress" {
   type = list(object({
     description = string
@@ -63,20 +74,12 @@ variable "vpc_sg_egress" {
   description = "value"
 }
 
-variable "ebs_root_volume" {
-  type = object({
-    volume_size = number
-    volume_type = string
-  })
-  description = "value"
-}
 
 ### S3
 variable "bucket_name" {
   type        = string
   description = "S3 bucket name"
-}
-
+} 
 
 
 ### CodeDeploy
@@ -95,11 +98,4 @@ variable "deployment_groups" {
 variable "repo_name" {
   type        = string
   description = "ECR repository name"
-}
-
-
-### Backend Name
-variable "backend_name" {
-  type        = string
-  description = "Backend name"
 }

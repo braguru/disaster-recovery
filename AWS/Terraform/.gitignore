@@ -2,4 +2,5 @@
 *.tfstate*
 *.tfstate.backup*
 *.tfvars
+backend.tf
 !example.tfvars

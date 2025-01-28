@@ -11,22 +11,25 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_iam_role" "existing_role" {
-  name = "aws-code-deploy-role"
-}
+# data "aws_iam_role" "existing_role" {
+#   name = "aws-code-deploy-role"
+
+# }
 
 resource "aws_iam_role" "code_deploy_role" {
-  count = length(data.aws_iam_role.existing_role.id) == 0 ? 1 : 0
+  # count              = try(data.aws_iam_role.existing_role.arn,null) == null ? 1 : 0
   name               = "aws-code-deploy-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+
 resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
-  count = length(data.aws_iam_role.existing_role.id) == 0 ? 1 : 0
-
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
-  role       = aws_iam_role.code_deploy_role[count.index].name
-
+  role = aws_iam_role.code_deploy_role.name
+  # role       = coalesce(
+  #   try(data.aws_iam_role.existing_role.name, null),
+  #   aws_iam_role.code_deploy_role[0].name
+  # )
 }
 
 resource "aws_sns_topic" "deployment_topic" {
@@ -43,8 +46,8 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
   deployment_group_name = var.deployment_groups[count.index]
 
   # Use the role ARN from the resource if created, otherwise use the data source
-  service_role_arn = length(data.aws_iam_role.existing_role.id) == 0 ? aws_iam_role.code_deploy_role[0].arn : data.aws_iam_role.existing_role.arn
-
+  # service_role_arn = length(data.aws_iam_role.existing_role.id) == 0 ? aws_iam_role.code_deploy_role[0].arn : data.aws_iam_role.existing_role.arn
+  service_role_arn = aws_iam_role.code_deploy_role.arn
 
   ec2_tag_set {
     ec2_tag_filter {
