@@ -15,12 +15,13 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "ubuntu_instance" {
-  ami = data.aws_ami.ubuntu.id
-  instance_type     = var.instance_type
-  subnet_id         = var.subnet_id
-  key_name          = var.key_pair_name
-  security_groups   = var.aws_security_group
-  availability_zone = var.availability_zone
+  ami                  = data.aws_ami.ubuntu.id
+  instance_type        = var.instance_type
+  subnet_id            = var.subnet_id
+  key_name             = var.key_pair_name
+  security_groups      = var.aws_security_group
+  availability_zone    = var.availability_zone
+  iam_instance_profile = var.iam_code_deploy_name
 
   root_block_device {
     volume_size           = 24
@@ -48,6 +49,14 @@ resource "aws_instance" "ubuntu_instance" {
               ${file("${path.module}/../scripts/install_certbot.sh")}
               EOL
 
+              cat <<'EOL' > /scripts/install_codedeploy.sh
+              ${file("${path.module}/../scripts/install_codedeploy.sh")}
+              EOL
+
+              cat <<'EOL' > /scripts/install_aws.sh
+              ${file("${path.module}/../scripts/install_aws.sh")}
+              EOL
+
               # Make scripts executable
               chmod +x /scripts/*.sh
 
@@ -55,6 +64,8 @@ resource "aws_instance" "ubuntu_instance" {
               /scripts/install_docker.sh
               /scripts/install_nginx.sh
               /scripts/install_certbot.sh
+              /scripts/install_codedeploy.sh
+              /scripts/install_aws.sh
               EOF
 
   tags = {

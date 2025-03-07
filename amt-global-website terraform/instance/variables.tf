@@ -29,6 +29,11 @@ variable "subnet_id" {
 variable "availability_zone" {
   description = "The availability zone of the EC2 instance"
   type        = string
-  default     = "eu-west-1a"
-  
+  default     = "eu-west-1a" 
 }
+
+variable "iam_code_deploy_name" {
+  description = "The IAM role for CodeDeploy"
+  type        = string
+}
+

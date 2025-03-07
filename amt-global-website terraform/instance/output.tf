@@ -21,3 +21,9 @@ output "subnet_id" {
 output "elastic_ip" {
   value = aws_eip.Amalitech-Website-EIP.public_ip
 }
+
+output "instance_name" {
+  description = "The name of the instance"
+  value       = aws_instance.ubuntu_instance.tags["Name"]
+}
+

@@ -27,8 +27,27 @@ module "security_group" {
 }
 
 module "Amalitech-Website-instance" {
-  source = "./instance"
-  subnet_id          = module.subnet.subnet_id
-  aws_security_group = [module.security_group.security_group_id]
-  tag                = "Amalitech-Website"
+  source               = "./instance"
+  subnet_id            = module.subnet.subnet_id
+  aws_security_group   = [module.security_group.security_group_id]
+  tag                  = "Amalitech-Website"
+  iam_code_deploy_name = module.iam.ec2_profile_name
+}
+
+module "s3" {
+  source = "./s3"
+}
+
+module "iam" {
+  source = "./iam"
+}
+
+module "codeDeploy" {
+  source           = "./codeDeploy"
+  instance_name    = module.Amalitech-Website-instance.instance_name
+  service_role_arn = module.iam.code_deploy_role_arn
+}
+
+module "ecr" {
+  source = "./ecr"
 }
