@@ -19,6 +19,7 @@ variable "enable_dns_hostnames" {
 variable "aws_profile" {
   description = "The AWS profile to use"
   type        = string
-  default     = "marketing-cli"
+  # default     = "marketing-cli"
+  default     = "amalitech-lab"
 }
 
