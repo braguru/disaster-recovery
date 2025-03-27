@@ -17,8 +17,8 @@ resource "aws_apprunner_service" "app_service" {
   }
 
   instance_configuration {
-    cpu    = "1024"
-    memory = "2048"
+    cpu    = "512"
+    memory = "1024"
   }
 
   auto_scaling_configuration_arn = aws_apprunner_auto_scaling_configuration_version.auto_scaling.arn
@@ -28,7 +28,7 @@ resource "aws_apprunner_auto_scaling_configuration_version" "auto_scaling" {
   auto_scaling_configuration_name = "amalitech-web-auto-scaling"
 
   max_concurrency = 100
-  max_size        = 10
+  max_size        = 2
   min_size        = 1
 
 }
