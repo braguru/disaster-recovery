@@ -16,12 +16,10 @@ This project implements a disaster recovery system designed to help organization
 - Minimum system requirements
 - Network requirements
 
-## Installation
-1. Clone the repository:
-```bash
-git clone https://github.com/your-organization/disaster-recovery.git
-```
-2. Install dependencies:
-```bash
-cd disaster-recovery
-```
+## Architecture Diagram
+
+![alt text](image.png)
+
+
+## Note
+This is subject to improvement. 
